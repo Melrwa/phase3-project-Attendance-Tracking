@@ -6,15 +6,24 @@ from datetime import datetime
 # SQLAlchemy Base
 Base = declarative_base()
 
+# Course Model
+class Course(Base):
+    __tablename__ = 'courses'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    students = relationship("Student", back_populates="course")
+
 # Student Model
 class Student(Base):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String, nullable=False)
-    course = Column(String, nullable=False)
+    course_id = Column(Integer, ForeignKey('courses.id'))
     created_at = Column(DateTime, default=datetime.now)
 
+    course = relationship("Course", back_populates="students")
     attendances = relationship("Attendance", back_populates="student")
 
 # Staff Model

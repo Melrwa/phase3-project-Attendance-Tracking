@@ -1,8 +1,29 @@
 
 import click
-from lib.db.models import Session, Student, Staff, Visitor, Attendance
+from datetime import datetime, timedelta
+from lib.db.models import Session, Student, Staff, Visitor, Attendance, Course
 from lib.helpers import get_current_time, format_time, validate_id, validate_user_existence
 
+# Check for active clock-in
+def has_active_clock_in(user_id, user_type, session):
+    if user_type == 'student':
+        return session.query(Attendance).filter_by(student_id=user_id, clock_out_time=None).first()
+    elif user_type == 'staff':
+        return session.query(Attendance).filter_by(staff_id=user_id, clock_out_time=None).first()
+    elif user_type == 'visitor':
+        return session.query(Attendance).filter_by(visitor_id=user_id, clock_out_time=None).first()
+    return None
+
+# Check for last clock-in within 12 hours
+def can_clock_in(user_id, user_type, session):
+    twelve_hours_ago = get_current_time() - timedelta(hours=12)
+    if user_type == 'student':
+        return not session.query(Attendance).filter(Attendance.student_id == user_id, Attendance.clock_in_time > twelve_hours_ago).first()
+    elif user_type == 'staff':
+        return not session.query(Attendance).filter(Attendance.staff_id == user_id, Attendance.clock_in_time > twelve_hours_ago).first()
+    elif user_type == 'visitor':
+        return not session.query(Attendance).filter(Attendance.visitor_id == user_id, Attendance.clock_in_time > twelve_hours_ago).first()
+    return False
 
 # Clock-in functionality
 def clock_in(user_id, user_type):
@@ -11,6 +32,30 @@ def clock_in(user_id, user_type):
     if not user_id or not validate_user_existence(user_id, user_type, session):
         click.echo('Invalid ID or user not found.')
         return
+
+    # Check for active clock-in
+    if has_active_clock_in(user_id, user_type, session):
+        click.echo('You already have an active clock-in. Please clock out before clocking in again.')
+        return
+
+    # Check if clock-in is allowed within 12 hours
+    if not can_clock_in(user_id, user_type, session):
+        click.echo('You can only clock in once every 12 hours.')
+        return
+
+    if user_type == 'student':
+        student = session.query(Student).filter_by(id=user_id).first()
+        if not student.course_id:
+            click.echo('You are not assigned to any course. Please contact administration.')
+            return
+        
+        course = session.query(Course).filter_by(id=student.course_id).first()
+        click.echo(f'You are assigned to the course: {course.name}.')
+        
+        selected_course_id = click.prompt('Enter the course number to clock in', type=int)
+        if selected_course_id != student.course_id:
+            click.echo('You can only clock in to your assigned course.')
+            return
 
     attendance = Attendance(clock_in_time=get_current_time())
     if user_type == 'student':
@@ -32,14 +77,7 @@ def clock_out(user_id, user_type):
         click.echo('Invalid ID or user not found.')
         return
 
-    attendance = None
-    if user_type == 'student':
-        attendance = session.query(Attendance).filter_by(student_id=user_id, clock_out_time=None).first()
-    elif user_type == 'staff':
-        attendance = session.query(Attendance).filter_by(staff_id=user_id, clock_out_time=None).first()
-    elif user_type == 'visitor':
-        attendance = session.query(Attendance).filter_by(visitor_id=user_id, clock_out_time=None).first()
-
+    attendance = has_active_clock_in(user_id, user_type, session)
     if attendance:
         attendance.clock_out_time = get_current_time()
         session.commit()
@@ -50,12 +88,21 @@ def clock_out(user_id, user_type):
 # Create new student
 def create_student():
     name = click.prompt('Enter student name')
-    course = click.prompt('Enter student course')
     session = Session()
-    new_student = Student(name=name, course=course)
-    session.add(new_student)
-    session.commit()
-    click.echo(f'Student {name} created.')
+    courses = session.query(Course).all()
+    click.echo('Please select a course:')
+    for course in courses:
+        click.echo(f'{course.id}. {course.name}')
+    selected_course_id = click.prompt('Enter the course number', type=int)
+    
+    selected_course = session.query(Course).filter_by(id=selected_course_id).first()
+    if selected_course:
+        new_student = Student(name=name, course_id=selected_course.id)
+        session.add(new_student)
+        session.commit()
+        click.echo(f'Student {name} created and assigned to {selected_course.name} course.')
+    else:
+        click.echo('Invalid course selection.')
 
 # Create new staff
 def create_staff():
@@ -77,6 +124,15 @@ def create_visitor():
     session.commit()
     click.echo(f'Visitor {name} created.')
 
+# Create Course functionality
+def create_course():
+    session = Session()
+    course_name = click.prompt('Enter course name')
+    new_course = Course(name=course_name)
+    session.add(new_course)
+    session.commit()
+    click.echo(f'Course "{course_name}" created successfully.')
+
 # Menu display
 def show_menu():
     click.echo("Attendance Tracking System")
@@ -85,6 +141,7 @@ def show_menu():
     click.echo("3. Create Student")
     click.echo("4. Create Staff")
     click.echo("5. Create Visitor")
+    click.echo("6. Create Course")
     click.echo("0. Exit")
 
 # Handle menu choice
@@ -95,6 +152,7 @@ def handle_menu_choice(choice):
         '3': create_student,
         '4': create_staff,
         '5': create_visitor,
+        '6': create_course,
     }
 
     if choice in menu_options:
@@ -106,7 +164,6 @@ def handle_menu_choice(choice):
         click.echo("Invalid choice. Please try again.")
     return True
 
-# Main CLI function
 @click.command()
 def cli():
     while True:

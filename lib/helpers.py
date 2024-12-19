@@ -1,6 +1,6 @@
 
 from datetime import datetime
-from lib.db.models import  Student, Staff, Visitor
+from lib.db.models import Student, Staff, Visitor
 
 def get_current_time():
     """Returns the current datetime."""
@@ -20,6 +20,7 @@ def validate_id(user_id):
             return None
     except ValueError:
         return None
+
 def validate_user_existence(user_id, user_type, session):
     if user_type == 'student':
         return session.query(Student).filter_by(id=user_id).first() is not None
