@@ -1,5 +1,6 @@
-from sqlalchemy import create_engine, Column, Integer, String, DateTime, ForeignKey
-from sqlalchemy.orm import declarative_base, sessionmaker
+
+from sqlalchemy import create_engine, Column, Integer, String, Date, DateTime, ForeignKey
+from sqlalchemy.orm import declarative_base, sessionmaker, relationship
 from datetime import datetime
 
 # SQLAlchemy Base
@@ -14,6 +15,8 @@ class Student(Base):
     course = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
 
+    attendances = relationship("Attendance", back_populates="student")
+
 # Staff Model
 class Staff(Base):
     __tablename__ = 'staff'
@@ -23,18 +26,37 @@ class Staff(Base):
     role = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.now)
 
+    attendances = relationship("Attendance", back_populates="staff")
+
+# Visitor Model
+class Visitor(Base):
+    __tablename__ = 'visitors'
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    name = Column(String, nullable=False)
+    reason = Column(String, nullable=False)
+    created_at = Column(DateTime, default=datetime.now)
+
+    attendances = relationship("Attendance", back_populates="visitor")
+
 # Attendance Model
 class Attendance(Base):
     __tablename__ = 'attendance'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(Integer, nullable=False)  # Can reference both Student and Staff IDs
-    user_type = Column(String, nullable=False)  # Either 'student' or 'staff'
     clock_in_time = Column(DateTime)
     clock_out_time = Column(DateTime)
-    date = Column(DateTime, default=datetime.now)
+    date = Column(Date, default=datetime.now().date)
+
+    student_id = Column(Integer, ForeignKey('students.id'), nullable=True)
+    staff_id = Column(Integer, ForeignKey('staff.id'), nullable=True)
+    visitor_id = Column(Integer, ForeignKey('visitors.id'), nullable=True)
+
+    student = relationship("Student", back_populates="attendances")
+    staff = relationship("Staff", back_populates="attendances")
+    visitor = relationship("Visitor", back_populates="attendances")
 
 # Create Database Engine and Session
 engine = create_engine('sqlite:///db/attendance.db')
-Base.metadata.create_all(engine)  # Create tables if they don't exist
+Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
