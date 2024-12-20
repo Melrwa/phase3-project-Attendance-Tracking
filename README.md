@@ -92,6 +92,9 @@ Attendance Tracking System
 - ***6. Create Course***
 - ***7. Generate Daily Report***
 - ***8. Generate Weekly Report***
+- ***9. Delete Student***
+-***10. Delete Staff***
+-***11. Delete Visitor***
 - ***0. Exit***
 
 ### Menu Options
@@ -104,6 +107,9 @@ Attendance Tracking System
 - **6. Create Course: Create a new course that students can enroll in.**
 - **7. Generate Daily Report: Generate a report of all attendance activity for the current day.**
 - **8. Generate Weekly Report: Generate a summary of attendance activity for the entire week.**
+- **9. Delete student: Deletes student from the database.**
+- **10. Delete staff: Deletes staff from the database.**
+- **11. Delete visitor: Deletes vistor from the database.**
 - **0. Exit: Exit the application.**
 
 ---

@@ -94,6 +94,7 @@ def generate_daily_report():
 
     # Write the generated content to a file
     write_to_file('daily_report.md', content)
+   
 
 def generate_weekly_report():
     """

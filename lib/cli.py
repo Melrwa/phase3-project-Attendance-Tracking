@@ -139,7 +139,77 @@ def create_course():
     session.commit()
     click.echo(f"=== Success! ===\nCourse \"{course_name}\" created successfully.")
 
-# Menu display
+
+# Delete a student
+def delete_student():
+    click.echo("=== Delete a Student ===")
+    session = Session()
+    students = session.query(Student).all()
+    if not students:
+        click.echo("*** No students found to delete. ***")
+        return
+
+    click.echo("Available Students:")
+    for student in students:
+        click.echo(f"ID: {student.id}, Name: {student.name}")
+
+    student_id = click.prompt("Enter the student ID to delete", type=int)
+    student_to_delete = session.query(Student).filter_by(id=student_id).first()
+
+    if student_to_delete:
+        session.delete(student_to_delete)
+        session.commit()
+        click.echo(f"=== Success! ===\nStudent with ID {student_id} deleted.")
+    else:
+        click.echo("*** Invalid student ID. ***")
+
+# Delete a staff member
+def delete_staff():
+    click.echo("=== Delete a Staff Member ===")
+    session = Session()
+    staff_members = session.query(Staff).all()
+    if not staff_members:
+        click.echo("*** No staff members found to delete. ***")
+        return
+
+    click.echo("Available Staff Members:")
+    for staff in staff_members:
+        click.echo(f"ID: {staff.id}, Name: {staff.name}, Role: {staff.role}")
+
+    staff_id = click.prompt("Enter the staff ID to delete", type=int)
+    staff_to_delete = session.query(Staff).filter_by(id=staff_id).first()
+
+    if staff_to_delete:
+        session.delete(staff_to_delete)
+        session.commit()
+        click.echo(f"=== Success! ===\nStaff with ID {staff_id} deleted.")
+    else:
+        click.echo("*** Invalid staff ID. ***")
+
+# Delete a visitor
+def delete_visitor():
+    click.echo("=== Delete a Visitor ===")
+    session = Session()
+    visitors = session.query(Visitor).all()
+    if not visitors:
+        click.echo("*** No visitors found to delete. ***")
+        return
+
+    click.echo("Available Visitors:")
+    for visitor in visitors:
+        click.echo(f"ID: {visitor.id}, Name: {visitor.name}, Reason: {visitor.reason}")
+
+    visitor_id = click.prompt("Enter the visitor ID to delete", type=int)
+    visitor_to_delete = session.query(Visitor).filter_by(id=visitor_id).first()
+
+    if visitor_to_delete:
+        session.delete(visitor_to_delete)
+        session.commit()
+        click.echo(f"=== Success! ===\nVisitor with ID {visitor_id} deleted.")
+    else:
+        click.echo("*** Invalid visitor ID. ***")
+
+#Menu Display
 def show_menu():
     click.echo("\n====================")
     click.echo("Attendance Tracking System")
@@ -152,8 +222,12 @@ def show_menu():
     click.echo("6. Create Course")
     click.echo("7. Generate Daily Report")
     click.echo("8. Generate Weekly Report")
+    click.echo("9. Delete Student")
+    click.echo("10. Delete Staff")
+    click.echo("11. Delete Visitor")
     click.echo("0. Exit")
     click.echo("====================")
+
 
 # Handle menu choice
 def handle_menu_choice(choice):
@@ -166,7 +240,11 @@ def handle_menu_choice(choice):
         '6': create_course,
         '7': generate_daily_report,
         '8': generate_weekly_report,
+        '9': delete_student,
+        '10': delete_staff,
+        '11': delete_visitor,
     }
+
 
     if choice in menu_options:
         menu_options[choice]()
