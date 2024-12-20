@@ -57,7 +57,7 @@ cd phase3-project-Attendance-Tracking
 ### **2. Create a virtual environment**
 
 ```bash
-Copy code
+
 pipenv install
 pipenv shell
 ```
@@ -67,7 +67,7 @@ pipenv shell
 Run the following commands to create and initialize the database:
 
 ```bash
-Copy code
+
 python3 -m lib.db.models
 ```
 
@@ -76,7 +76,7 @@ python3 -m lib.db.models
 Run the application using the following command:
 
 ```bash
-Copy code
+
 python3 -m lib.cli
 ```
 
