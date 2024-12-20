@@ -50,7 +50,7 @@ The system supports a relational database with multiple linked tables using **SQ
 ### **1. Clone the repository**
 
 ```bash
-git clone https://github.com/your-username/attendance-tracking-system.git
+git clone https://github.com/Melrwa/phase3-project-Attendance-Tracking.git
 cd phase3-project-Attendance-Tracking
 ```
 
@@ -96,15 +96,15 @@ Attendance Tracking System
 
 ### Menu Options
 
-- **1. Clock In: Clock in for a student, staff, or visitor by entering their ID and role.
-- **2. Clock Out: Clock out for a student, staff, or visitor by entering their ID and role.
-- **3. Create Student: Add a new student to the system and assign them a course.
-- **4. Create Staff: Add a new staff member to the system and define their role.
-- **5. Create Visitor: Log a visitor into the system with their name and reason for visit.
-- **6. Create Course: Create a new course that students can enroll in.
-- **7. Generate Daily Report: Generate a report of all attendance activity for the current day.
-- **8. Generate Weekly Report: Generate a summary of attendance activity for the entire week.
-- **0. Exit: Exit the application.
+- **1. Clock In: Clock in for a student, staff, or visitor by entering their ID and role.**
+- **2. Clock Out: Clock out for a student, staff, or visitor by entering their ID and role.**
+- **3. Create Student: Add a new student to the system and assign them a course.**
+- **4. Create Staff: Add a new staff member to the system and define their role.**
+- **5. Create Visitor: Log a visitor into the system with their name and reason for visit.**
+- **6. Create Course: Create a new course that students can enroll in.**
+- **7. Generate Daily Report: Generate a report of all attendance activity for the current day.**
+- **8. Generate Weekly Report: Generate a summary of attendance activity for the entire week.**
+- **0. Exit: Exit the application.**
 
 ---
 
