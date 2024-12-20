@@ -2,9 +2,18 @@
 
 ## Courses Clocked Into Within a Day
 
+### Data Analytics
+
+- **Amick** — Clocked In: 2024-12-20 06:38:10, Clocked Out: 
+- **Angela** — Clocked In: 2024-12-20 06:51:11, Clocked Out: 
+- **Benjamin** — Clocked In: 2024-12-20 07:03:17, Clocked Out: 
+### Cyber Security
+
+- **Monica** — Clocked In: 2024-12-20 07:05:24, Clocked Out: 
 
 ## Staff Clocked In Within a Day
 
+- **Melki ** — Clocked In: 2024-12-20 07:03:58, Clocked Out: 
 
 ## Visitors Who Visited Within a Day
 
@@ -12,7 +21,7 @@
 ## All Students and Their Courses
 
 - **Javinho** — Course: Software Engineering
-- **Mercy** — Course: Software Engineering
+- **Mercy ** — Course: Software Engineering
 - **Jack** — Course: Software Engineering
 - **Amick** — Course: Data Analytics
 - **Angela** — Course: Data Analytics
@@ -34,14 +43,14 @@
 
 ## All Staff and Their Roles
 
-- **Melki** — Role: Accountant
+- **Melki ** — Role: Accountant
 - **Mwaniki** — Role: Software Engineer
 - **Samuel** — Role: Technical Mentor
-- **Beatrice** — Role: Technical Mentor
+- **Beatrice ** — Role: Technical Mentor
 - **Brian** — Role: Technical Mentor
 - **Deborah** — Role: Receptionist
-- **Mike** — Role: Human Resources
-- **Jane** — Role: Marketing
-- **Wycliffe** — Role: Manager
+- **Mike ** — Role: Human Resources
+- **Jane ** — Role: Marketing
+- **Wycliffe ** — Role: Manager
 - **Ojwang** — Role: Technical Mentor
 - **Wandera** — Role: IT Expert

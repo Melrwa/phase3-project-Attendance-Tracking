@@ -52,7 +52,7 @@ def clock_in(user_id, user_type):
             return
         
         course = session.query(Course).filter_by(id=student.course_id).first()
-        click.echo(f'*** You are assigned to the course: {course.name}. ***')
+        click.echo(f'*** You are assigned to the course: {course.name} and course ID is {student.course_id}. ***')
         
         selected_course_id = click.prompt('Enter the course number to clock in', type=int)
         if selected_course_id != student.course_id:
