@@ -170,4 +170,4 @@ Contributions are much  welcomed!
 
 ## **License**
 
-This project is licensed under the [MIT License](), which allows modification, distribution, and use for both personal and commercial purposes.
+This project is licensed under the [MIT License](https://github.com/Melrwa/phase3-project-Attendance-Tracking/tree/main#) which allows modification, distribution, and use for both personal and commercial purposes.
